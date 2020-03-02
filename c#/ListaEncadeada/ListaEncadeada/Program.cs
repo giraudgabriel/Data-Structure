@@ -98,6 +98,32 @@ namespace ListaEncadeada
                 aux = aux.next;
             }
         }
+
+        public void Distinct()
+        {
+            Node previous = head;
+            Node next = previous.next;
+
+            while (next != null)
+            {
+                if (previous.data.Equals(next.data))
+                    previous.next = next.next;
+                else
+                    previous = previous.next;
+
+                next = next.next;
+            }
+            next = head;
+            while (next != null && previous != null)
+            {
+                if (previous.data.Equals(next.data))
+                {
+                    next = next.next;
+                    previous = previous.next;
+                }
+            }
+            head = next;
+        }
     }
 
     class Program
@@ -133,7 +159,28 @@ namespace ListaEncadeada
 
             nomes.PrintAllNodes();
 
-            Console.ReadLine();
+            LinkedList numeros = new LinkedList();
+
+            numeros.AddFirst(1);
+            numeros.AddFirst(1);
+            numeros.AddFirst(2);
+            numeros.AddFirst(2);
+            numeros.AddFirst(3);
+            numeros.AddFirst(4);
+            numeros.AddLast(5);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+            numeros.AddLast(4);
+
+            numeros.PrintAllNodes();
+
+            numeros.Distinct();
+
+            numeros.PrintAllNodes();
         }
     }
 }
