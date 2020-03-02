@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1582292722 source:c:\users\gabriel\desktop\facul1sem2020\data-structure\c++\listaencadeada\main.cpp
+	<iostream>
+	<cstdlib>
+	<string>
+

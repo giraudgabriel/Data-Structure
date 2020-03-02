@@ -6,96 +6,75 @@ typedef struct reg {
    struct reg *prox;
 } celula;
 
-int main(int argc, char const *argv[])
+int main()
 {
-    celula *le;
-    le = malloc (sizeof (celula));
-    le->prox = NULL;
-    insere(5, le);
-    insere(6, le);
-    insere(7, le);
-    ordernarCrescente(le);
-    imprime(le);
-    return 0;
+    celula *lstSemCabeca;
+    lstSemCabeca = NULL;
+    
+    celula *lstCabeca;
+    lstCabeca = malloc(sizeof(celula));
+    lstCabeca->prox = NULL;
+
+    inserir(1,lstCabeca);
+    inserir(2,lstCabeca);
+    inserir(3,lstCabeca);
+    inserir(4,lstCabeca);
+
+    int array[] = { 5,6,7,8,9,10,11,12 };
+    inserirArray(array,lstCabeca,8);
+
+    imprimirComCabeca(lstCabeca);
+
+    return 0; 
 }
 
+void imprimeSemCabeca(celula *lst){
+    celula *p;
+    for (p = lst; p != NULL; p = p->prox) 
+        printf ("%d\n", p->conteudo);
+}
 
-void imprime(celula *le){
+void imprimirComCabeca(celula *le){
     if(le != NULL){
         printf("%d \n",*le->prox);
-        imprime(le->prox);
+        imprimirComCabeca(le->prox);
     }
 }
 
-void insere (int x, celula *p)
+void inserir(int valor, celula *le){
+    celula *nova;
+    nova = malloc(sizeof(celula));
+    nova->conteudo = valor;
+    nova->prox = le->prox;
+    le->prox = nova;
+}
+
+void inserirArray(int valores[], celula *lst, int quantidade){
+    for (int i = 0; i < quantidade; i++)
+        inserir(valores[i], lst);
+}
+
+celula* buscar (int valor, celula *lst)
 {
-   celula *nova;
-   nova = malloc (sizeof (celula));
-   nova->conteudo = x;
-   nova->prox = p->prox;
-   p->prox = nova;
+   if (lst->prox == NULL) 
+      return NULL;
+   if (lst->prox->conteudo == valor) 
+      return lst->prox;
+   return buscar (valor, lst->prox);
 }
 
-void ordernarCrescente(celula *p){
-    if(p != NULL){
-        celula *ant = p->prox;
-        celula *pos = p->prox->prox;
-
-        if(ant->conteudo > pos->conteudo){
-            ant = pos;
-            pos = p->prox;
-        }
-        ordernarCrescente(p->prox);
-    }
-}
-
-void ordernarDecrescente(celula *p){
-    if(p != NULL){
-        celula *ant = p->prox;
-        celula *pos = p->prox->prox;
-
-        if(ant->conteudo < pos->conteudo){
-            ant = pos;
-            pos = p->prox;
-        }
-        ordernarDecrescente(p->prox);
-    }
-}
-
-void buscarERemover(int x, celula *le){
-    if(le != NULL){
-        if(le->conteudo == x) {
-            celula *removida = le;
-            le = removida->prox;
-            free(removida);
-        }
-        else buscarERemover(x,le->prox);
-    }
-    else printf("\n Valor não encontrado!");
-}
-
-
-void remover(int valor, celula *p)
+void remover (celula *p)
 {
-    if(p == NULL){
-        return NULL;
-    }
-    celula *ant = NULL;
-    celula *aux = p;
-    while(aux != NULL)
-    {
-        if(valor == aux->conteudo) break;
-        ant = aux;
-        aux = aux->prox;
-    }
-    if(ant == NULL){
-        p = p->prox;
-        printf("\n %d Removido com sucesso!\n\n",valor);
-        free(aux);
-    }
-    else if(aux != NULL){
-        ant = aux->prox;
-        printf("\n\t%d removido com sucesso!\n\n",valor);
-        free(aux);
-    }
+   celula *morta;
+   morta = p->prox;
+   p->prox = morta->prox;
+   free (morta);
 }
+
+void buscarERemover(int valor, celula *lst){
+    celula *aRemover = buscar(valor, lst);
+    if(aRemover != NULL) remover(aRemover);
+    else printf("\n \t Valor não encontrado! \t \n");
+}
+
+
