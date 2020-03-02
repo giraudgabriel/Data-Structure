@@ -4,73 +4,136 @@ using System.Collections.Generic;
 
 namespace ListaEncadeada
 {
-    public class Celula<T>
+    public class Node
     {
-        public T Valor { get; set; } = default;
-        public Celula<T> Proximo { get; set; } = new Celula<T>();
+        public Node next;
+        public object data;
     }
 
-    public class Lista<T>
+    public class LinkedList
     {
-        public Lista()
+        private Node head;
+
+        public void PrintAllNodes()
         {
-            Tam = 0;
-            primeiro = new Celula<T>();
-            primeiro.Valor = default;
-            primeiro.Proximo = null;
-            ultimo = primeiro;
-        }
-
-        public int Tam { get; private set; }
-
-        private Celula<T> primeiro;
-        private Celula<T> ultimo;
-        private Celula<T> aux;
-
-
-        public bool IsVazia()
-        {
-            return (ultimo == primeiro);
-        }
-        public void InserirUltimo(T valor)
-        {
-            ultimo = new Celula<T>();
-            ultimo.Proximo.Valor = valor;
-            ultimo = ultimo.Proximo;
-            Tam++;
-        }
-
-        public void InserirPrimeiro(T valor)
-        {
-            Celula<T> nova = new Celula<T>();
-            nova.Valor = valor;
-            nova.Proximo = primeiro.Proximo;
-            if (IsVazia())
-                ultimo = primeiro.Proximo;
-            primeiro.Proximo = primeiro;
-            primeiro = nova;
-            Tam++;
-        }
-
-        public void ListarTudo()
-        {
-            aux = primeiro.Proximo;
+            Console.WriteLine("\n Valores da Lista Encadeada:\n");
+            Node aux = head;
             while (aux != null)
             {
-                Console.WriteLine(aux.Valor);
-                aux = aux.Proximo;
+                Console.WriteLine(aux.data);
+                aux = aux.next;
+            }
+            Console.WriteLine();
+        }
+
+        public void AddFirst(object data)
+        {
+            Node inserted = new Node
+            {
+                data = data,
+                next = head
+            };
+
+            head = inserted;
+        }
+
+        public void AddLast(object data)
+        {
+            if (head == null)
+            {
+                head = new Node
+                {
+                    data = data,
+                    next = null
+                };
+            }
+            else
+            {
+                Node inserted = new Node
+                {
+                    data = data
+                };
+
+                Node current = head;
+                while (current.next != null) current = current.next;
+
+                current.next = inserted;
+            }
+        }
+
+        public object Find(object data)
+        {
+            Console.WriteLine($"- Buscando por {data}... \n");
+            Node aux = head;
+            while (aux != null)
+            {
+                if (aux.data == data)
+                {
+                    Console.WriteLine("\t Encontrado! \n");
+                    return aux;
+                }
+                aux = aux.next;
+            }
+            Console.WriteLine("\t Não Encontrado! \n");
+            return null;
+        }
+
+        public void FindAndRemove(object data)
+        {
+            Node toRemove = (Node)Find(data);
+            if (toRemove != null)
+            {
+                toRemove.data = toRemove.next;
+                Console.WriteLine($"\n {data} removido com sucesso! \n");
+            }
+        }
+
+        public void AddList(LinkedList list)
+        {
+            Node aux = list.head;
+
+            while (aux != null)
+            {
+                AddLast(aux.data);
+                aux = aux.next;
             }
         }
     }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Lista<int> lst = new Lista<int>();
-            lst.InserirPrimeiro(1);
-            lst.InserirPrimeiro(2);
-            lst.InserirUltimo(3);
-            Console.WriteLine(lst.Tam);
+            Console.WriteLine("Lista encadeada \n");
+
+            LinkedList list = new LinkedList();
+
+            list.AddFirst("Fernandes");
+            list.AddFirst("Gabriel");
+
+            list.PrintAllNodes();// Gabriel Fernandes
+
+            Console.WriteLine("\n \n");
+
+            list.AddLast("Giraud");
+
+            list.PrintAllNodes(); // Gabriel Fernandes Giraud
+
+            object value = list.Find("Giraud");
+            value = list.Find("Marijuana");
+
+            list.AddFirst("Marijuana");
+            list.PrintAllNodes();
+
+            list.FindAndRemove("Marijuana");
+            list.PrintAllNodes();
+
+            LinkedList nomes = new LinkedList();
+            nomes.AddList(list);
+
+            nomes.PrintAllNodes();
+
+            Console.ReadLine();
         }
     }
 }
