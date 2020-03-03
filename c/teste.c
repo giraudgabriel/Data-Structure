@@ -20,6 +20,8 @@ int main(int argc, char const *argv[])
 
     // printf("%d",lst->conteudo);
 
+    //histograma - poligono de frequencia - poligono de frequencia acumulada.
+
     lst = malloc(sizeof(celula));
     lst->conteudo = 15;
 

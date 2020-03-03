@@ -12,6 +12,10 @@ namespace ListaEncadeada
 
     public class LinkedList
     {
+        public LinkedList()
+        {
+            
+        }
         private Node head;
 
         public void PrintAllNodes()
