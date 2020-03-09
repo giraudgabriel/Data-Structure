@@ -27,6 +27,10 @@ int main(int argc, char const *argv[])
 
     imprimir(f);
 
+    liberar(f);
+
+    imprimir(f);
+
     return 0;
 }
 
@@ -74,12 +78,12 @@ int vazia(fila* f)
     return (f->inicio == NULL);
 }
 
-void liberar(fila* f){
-    if(f->inicio != NULL){
-        celula *t = f->inicio->prox;
-        free(f->inicio);
-        f->inicio = t;
-        liberar(f);
-    }
-    free(f);
-}
+// void liberar(fila* f){
+//     celula *aux = f->inicio;
+//     while(aux != NULL){
+//         celula *t = aux->prox;
+//         free(aux);
+//         aux = t;
+//     }
+//     free(f);
+// }
